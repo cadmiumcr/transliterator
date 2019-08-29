@@ -1,2 +1,2 @@
 require "spec"
-require "../src/transliterator"
+require "../src/cadmium/transliterator"

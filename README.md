@@ -1,6 +1,6 @@
-# transliterator
+# Transliterator
 
-TODO: Write a description here
+The Transliterator module provides the ability to transliterate UTF-8 strings into pure ASCII so that they can be safely displayed in URL slugs or file names.
 
 ## Installation
 
@@ -8,8 +8,8 @@ TODO: Write a description here
 
    ```yaml
    dependencies:
-     transliterator:
-       github: your-github-user/transliterator
+     cadmium_transliterator:
+       github: cadmiumcr/transliterator
    ```
 
 2. Run `shards install`
@@ -20,15 +20,27 @@ TODO: Write a description here
 require "transliterator"
 ```
 
-TODO: Write usage instructions here
+```crystal
+transliterator = Cadmium.transliterator
 
-## Development
+transliterator.transliterate("Привет")
+# => "Privet"
 
-TODO: Write development instructions here
+transliterator.transliterate("你好朋友")
+# => "Ni Hao Peng You"
+
+# With the string extension
+
+"މިއަދަކީ ހދ ރީތި ދވހކވ".transliterate
+# => "mi'adhakee hdh reethi dhvhkv"
+
+"こんにちは、友人".transliterate
+# => konnichiwa, You Ren
+```
 
 ## Contributing
 
-1. Fork it (<https://github.com/your-github-user/transliterator/fork>)
+1. Fork it (<https://github.com/cadmiumcr/transliterator/fork>)
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
@@ -36,4 +48,4 @@ TODO: Write development instructions here
 
 ## Contributors
 
-- [Chris Watson](https://github.com/your-github-user) - creator and maintainer
+- [Chris Watson](https://github.com/watzon) - creator and maintainer
