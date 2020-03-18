@@ -85,4 +85,23 @@ describe Cadmium::Transliterator do
       end
     end
   end
+
+  describe ".parameterize" do
+    it "should convert a string to a URL save variant" do
+      test_cases = {
+        "Donald E. Knuth"                     => "donald-e-knuth",
+        "Random text with *(bad)* characters" => "random-text-with-bad-characters",
+        "Allow_Under_Scores"                  => "allow_under_scores",
+        "Trailing bad characters!@#"          => "trailing-bad-characters",
+        "!@#Leading bad characters"           => "leading-bad-characters",
+        "Squeeze   separators"                => "squeeze-separators",
+        "Test with + sign"                    => "test-with-sign",
+        "Test with malformed utf8 \251"       => "test-with-malformed-utf8"
+      }
+
+      test_cases.each do |from, to|
+        subject.parameterize(from).should eq(to)
+      end
+    end
+  end
 end

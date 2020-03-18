@@ -16,6 +16,7 @@ module Cadmium
       trim:          true,
     }
 
+    # TODO: Swap out options for named parameters
     def transliterate(source, **options)
       opts = DEFAULT_OPTS.merge(options)
       str = source.dup
@@ -66,6 +67,35 @@ module Cadmium
         str = str.gsub(item, replacement)
       end
       str
+    end
+
+    # Replaces special characters in a string so that it may be used as part of a ‘pretty’ URL.
+    # Based on the ActiveSupport implementation.
+    def parameterize(string : String, separator : String = "-", preserve_case : Bool = false)
+      # Replace accented characters with their ASCII equivalents
+      parameterized_string = transliterate(string)
+
+      # Turn unwanted characters into a separator
+      parameterized_string = parameterized_string.gsub(/[^A-Za-z0-9\-_]+/, separator)
+
+      unless separator.empty?
+        if separator == '-'
+          re_duplicate_separator = /-{2,}/
+          re_leading_trailing_separator = /^-|-$/
+        else
+          re_sep = Regex.escape(separator)
+          re_duplicate_separator        = /#{re_sep}{2,}/
+          re_leading_trailing_separator = /^#{re_sep}|#{re_sep}$/
+        end
+        # No more than one of the separator in a row.
+        parameterized_string = parameterized_string.gsub(re_duplicate_separator, separator)
+
+        # Remove leading/trailing separator.
+        parameterized_string = parameterized_string.gsub(re_leading_trailing_separator, "")
+      end
+
+      parameterized_string = parameterized_string.downcase unless preserve_case
+      parameterized_string
     end
 
     private def fix_chinese_space(str)
