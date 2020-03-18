@@ -17,7 +17,7 @@ The Transliterator module provides the ability to transliterate UTF-8 strings in
 ## Usage
 
 ```crystal
-require "transliterator"
+require "cadmium_transliterator"
 ```
 
 ```crystal
