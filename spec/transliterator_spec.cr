@@ -96,11 +96,22 @@ describe Cadmium::Transliterator do
         "!@#Leading bad characters"           => "leading-bad-characters",
         "Squeeze   separators"                => "squeeze-separators",
         "Test with + sign"                    => "test-with-sign",
-        "Test with malformed utf8 \251"       => "test-with-malformed-utf8"
+        "Test with malformed utf8 \251"       => "test-with-malformed-utf8",
       }
 
       test_cases.each do |from, to|
         subject.parameterize(from).should eq(to)
+      end
+    end
+
+    it "allows underscores to be converted as well" do
+      test_cases = {
+        "simply_underscored"   => "simply-underscored",
+        "__lead__and__trail__" => "lead-and-trail",
+      }
+
+      test_cases.each do |from, to|
+        subject.parameterize(from, convert_underscores: true).should eq(to)
       end
     end
   end
