@@ -71,7 +71,12 @@ module Cadmium
 
     # Replaces special characters in a string so that it may be used as part of a ‘pretty’ URL.
     # Based on the ActiveSupport implementation.
-    def parameterize(string : String, separator : String = "-", preserve_case : Bool = false)
+    def parameterize(
+      string : String,
+      separator : String = "-",
+      preserve_case : Bool = false,
+      convert_underscores : Bool = false
+    )
       # Replace accented characters with their ASCII equivalents
       parameterized_string = transliterate(string)
 
@@ -79,12 +84,17 @@ module Cadmium
       parameterized_string = parameterized_string.gsub(/[^A-Za-z0-9\-_]+/, separator)
 
       unless separator.empty?
+        # Convert underscores if required
+        if convert_underscores
+          parameterized_string = parameterized_string.gsub(/_/, separator)
+        end
+
         if separator == '-'
           re_duplicate_separator = /-{2,}/
           re_leading_trailing_separator = /^-|-$/
         else
           re_sep = Regex.escape(separator)
-          re_duplicate_separator        = /#{re_sep}{2,}/
+          re_duplicate_separator = /#{re_sep}{2,}/
           re_leading_trailing_separator = /^#{re_sep}|#{re_sep}$/
         end
         # No more than one of the separator in a row.
@@ -99,7 +109,7 @@ module Cadmium
     end
 
     private def fix_chinese_space(str)
-      str.gsub(Regex.new("([^\u4e00-\u9fa5\W])([\u4e00-\u9fa5])"), "\\1 \\2")
+      str.gsub(Regex.new("([^\u4e00-\u9fa5W])([\u4e00-\u9fa5])"), "\\1 \\2")
     end
 
     private def ucs2decode(str)
