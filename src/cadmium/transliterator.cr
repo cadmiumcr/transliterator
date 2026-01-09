@@ -75,7 +75,7 @@ module Cadmium
       string : String,
       separator : String = "-",
       preserve_case : Bool = false,
-      convert_underscores : Bool = false
+      convert_underscores : Bool = false,
     )
       # Replace accented characters with their ASCII equivalents
       parameterized_string = transliterate(string)
